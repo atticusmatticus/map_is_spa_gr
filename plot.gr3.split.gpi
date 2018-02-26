@@ -1,0 +1,16 @@
+#!/usr/bin/gnuplot
+set term postscript eps enhanced color
+
+set size ratio -1
+set palette defined (-1 "#ff0000", 0 "#ffffff", 1 "#0000ff")
+set cbr[-1:1]
+set xr[-17:17]
+set yr[-10:10]
+
+## CRD file with gr3's split
+set output "PDI.gr3.d0.00.split.eps"
+plot \
+	'<grep "^...............   0.125" ../d=0.25/PDI.d0.00.gr3' u ($1<0?$1:1/0):2:(-0.6*log($4)-0.3) lc palette pt 5 not, \
+	'<grep "^..........................     0.05" map_3D_gr.out' u ($1>0?$1:1/0):2:(-0.6*log($4)) lc palette pt 5 not, \
+	'PDI.crd' u 2:3:1 pt 7 lc variable not
+	;
